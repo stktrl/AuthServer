@@ -46,6 +46,7 @@ namespace ProductsApi
             {
                 options.AddPolicy("ReadProduct", policy => policy.RequireClaim("scope", "ProductsApi.Read"));
                 options.AddPolicy("WriteProduct", policy =>policy.RequireClaim("scope","ProductsApi.Write"));
+                options.AddPolicy("AdminProduct", policy => policy.RequireClaim("scope", "ProductsApi.Admin"));
             });
             
         }

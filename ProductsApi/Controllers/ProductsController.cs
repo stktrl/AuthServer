@@ -17,12 +17,14 @@ namespace ProductsApi.Controllers
             new Product { Id = 3, Name ="Üzüm",Quantity=28}
         };
         [HttpGet("{productId}")]
-        [Authorize(Policy = "ReadProduct")]
+        [Authorize(Policy ="WriteProduct")]
         public IActionResult GetProductNameById(int productId)
         {
             return Ok(products.Find(f => f.Id == productId));
         }
+       
         [HttpGet]
+        [Authorize(Policy = "AdminProduct")]
         public IActionResult GetAllProducts()
         {
             return Ok(products);
