@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestApi
+namespace TestApi2
 {
     public class Startup
     {
@@ -31,19 +31,14 @@ namespace TestApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestApi2", Version = "v1" });
             });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    options.Authority = "https://localhost:5001";
-                    options.Audience = "TestApi";
+                    options.Audience = "https://localhost:5001";
+                    options.Audience = "ProductsApi";
                 });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ReadTestApi", policy => policy.RequireClaim("scope", "TestApi.Read"));
-                options.AddPolicy("WriteTestApi", policy => policy.RequireClaim("scope", "TestApi.Write"));
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +48,7 @@ namespace TestApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestApi2 v1"));
             }
 
             app.UseHttpsRedirection();

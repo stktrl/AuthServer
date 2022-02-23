@@ -11,7 +11,9 @@ namespace AuthServer
             return new List<ApiScope>
             {
                 new ApiScope("TestApi.Write","TestApi yazma izni"),
-                new ApiScope("TestApi.Read","TestApi okuma izni")
+                new ApiScope("TestApi.Read","TestApi okuma izni"),
+                new ApiScope("ProductsApi.Read","ProductsApi okuma izni"),
+                new ApiScope ("ProductsApi.Write","ProductsApi yazma izni")
             };
         }
         //Apilar tanımlanır
@@ -19,7 +21,8 @@ namespace AuthServer
         {
             return new List<ApiResource>
             { 
-                new ApiResource("TestApi"){Scopes={"TestApi.Write","TestApi.Read"}}
+                new ApiResource("TestApi"){Scopes={"TestApi.Write","TestApi.Read"}},
+                new ApiResource("ProductsApi"){Scopes={"ProductsApi.Write","ProductsApi.Read"}}
             };
         }
 
@@ -35,6 +38,14 @@ namespace AuthServer
                     ClientSecrets= {new Secret("test".Sha256())},
                     AllowedGrantTypes={ GrantType.ClientCredentials},
                     AllowedScopes={"TestApi.Write","TestApi.Read"}                    
+                },
+                new Client
+                {
+                    ClientId="ProductsApi",
+                    ClientName="ProductsApi",
+                    ClientSecrets={new Secret("productsSecret".Sha256())},
+                    AllowedGrantTypes={GrantType.ClientCredentials},
+                    AllowedScopes={"ProductsApi.Write","ProductsApi.Read"}
                 }
             };
         }

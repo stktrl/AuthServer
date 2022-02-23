@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestApi
+namespace ProductsApi
 {
     public class Startup
     {
@@ -31,19 +31,23 @@ namespace TestApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductsApi", Version = "v1" });
             });
+            //auth servera gidip token onaylamasý yapar
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = "https://localhost:5001";
-                    options.Audience = "TestApi";
+                    options.Audience = "ProductsApi";
                 });
+            //scope bilgisine göre yetkili eriþim saðlanýr
+            //calim bazlý yetkilendirme
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ReadTestApi", policy => policy.RequireClaim("scope", "TestApi.Read"));
-                options.AddPolicy("WriteTestApi", policy => policy.RequireClaim("scope", "TestApi.Write"));
+                options.AddPolicy("ReadProduct", policy => policy.RequireClaim("scope", "ProductsApi.Read"));
+                options.AddPolicy("WriteProduct", policy =>policy.RequireClaim("scope","ProductsApi.Write"));
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +57,7 @@ namespace TestApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TestApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductsApi v1"));
             }
 
             app.UseHttpsRedirection();
