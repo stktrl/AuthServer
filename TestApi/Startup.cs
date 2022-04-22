@@ -39,6 +39,11 @@ namespace TestApi
                     options.Authority = "https://localhost:5001";
                     options.Audience = "TestApi";
                 });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ReadTestApi", policy => policy.RequireClaim("scope", "TestApi.Read"));
+                options.AddPolicy("WriteTestApi", policy => policy.RequireClaim("scope", "TestApi.Write"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

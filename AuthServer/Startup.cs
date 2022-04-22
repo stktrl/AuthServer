@@ -35,13 +35,17 @@ namespace AuthServer
             services.AddIdentityServer()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryApiScopes(Config.GetApiScopes())
+                .AddTestUsers(Config.GetTestUsers().ToList())//test userlar
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddDeveloperSigningCredential();// bu fonks. alternatifi olarak addsigningcredential metodu mevcut
-        }                                        // ikisi arasýndaki fark JWT imzalama stratejileridir(simetrik, asimetrik)
+                                                 // ikisi arasýndaki fark JWT imzalama stratejileridir(simetrik, asimetrik)
                                                  //Nihai olarak; ‘AddDeveloperSigningCredential’ metodu development esnasýnda private
                                                  //ve public keyleri kendisinin otomatik oluþturacaðýný ifade eder. ‘AddSigningCredential’ metodu ise
                                                  //production’a çýktýðýnda(örneðin Azure) kullanýlacak olan bir seçenektir.
                                                  // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            services.AddControllersWithViews();
+        }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -54,6 +58,8 @@ namespace AuthServer
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseStaticFiles();//wwwroot'a eriþebilmek için
 
             app.UseIdentityServer()
 ;
@@ -61,7 +67,7 @@ namespace AuthServer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
