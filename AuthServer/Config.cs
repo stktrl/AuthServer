@@ -16,7 +16,8 @@ namespace AuthServer
                 new ApiScope("TestApi.Write","TestApi yazma izni"),
                 new ApiScope("TestApi.Read","TestApi okuma izni"),
                 new ApiScope("ProductsApi.Read","ProductsApi okuma izni"),
-                new ApiScope("ProductsApi.Write","ProductsApi yazma izni")
+                new ApiScope("ProductsApi.Write","ProductsApi yazma izni"),
+                new ApiScope("NoyaxChat.Connect","Connect to Chat")
             };
         }
         //Apilar tanımlanır
@@ -25,7 +26,8 @@ namespace AuthServer
             return new List<ApiResource>
             { 
                 new ApiResource("TestApi"){Scopes={"TestApi.Write","TestApi.Read"}},
-                new ApiResource("ProductsApi"){Scopes={"ProductsApi.Write","ProductsApi.Read"}}
+                new ApiResource("ProductsApi"){Scopes={"ProductsApi.Write","ProductsApi.Read"}},
+                new ApiResource("NoyaxChat"){Scopes={"NoyaxChat.Connect"}}
             };
         }
         //merkezi kullanıcı yönetimi için inmemory kullanıcı üretiyoruz
@@ -77,7 +79,15 @@ namespace AuthServer
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
-            { 
+            {    new Client
+                {
+                    ClientId="NoyaxChat",
+                    ClientName="NoyaxChat",
+                    ClientSecrets={new Secret("noyaxchatsecret".Sha256())},
+                    AllowedGrantTypes={GrantType.ClientCredentials},
+                    AllowedScopes={"NoyaxChat.Connect"}
+                },
+
                 new Client
                 {
                     ClientId ="ClientExample",
